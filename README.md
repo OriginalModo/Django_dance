@@ -1,1 +1,3 @@
-# Django_dance
+Web Project Django 
+
+My BLOG + Many Sites
