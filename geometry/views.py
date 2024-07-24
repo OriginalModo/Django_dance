@@ -31,3 +31,35 @@ def get_square_area_redirect(request, square: int):
 
 def get_circle_area_redirect(request, circle: int):
     return redirect(reverse_lazy('circ', args=[circle]))
+
+
+def get_rectangle_area_new(request):
+    return render(request, 'geometry/rectangle.html')
+
+
+def get_square_area_new(request):
+    return render(request, 'geometry/square.html')
+
+
+def get_circle_area_new(request):
+    return render(request, 'geometry/circle.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

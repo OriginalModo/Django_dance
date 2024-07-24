@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'my_page',
+    'horoscope',
     'weekdays',
+    'geometry',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +58,9 @@ ROOT_URLCONF = 'my_page.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
+
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

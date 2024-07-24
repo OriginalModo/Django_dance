@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import redirect, reverse
 from django.urls import reverse
+from django.template.loader import render_to_string
+from dataclasses import dataclass
 
 signs = {
     "aries": "Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля).",
@@ -23,6 +25,7 @@ signs = {
 def get_my_date_converter(request, sign_zodiac):
     return HttpResponse(f'<h1>Дата {sign_zodiac}</h1>')
 
+
 def get_yyyy_converter(request, sign_zodiac):
     return HttpResponse(f'<h1>Число из 4-х цифр {sign_zodiac}</h1>')
 
@@ -31,11 +34,29 @@ def get_my_float_converter(request, sign_zodiac):
     return HttpResponse(f'<h1>Вещественное число {sign_zodiac}</h1>')
 
 
+@dataclass
+class Person:
+    name: str
+    age: int
+
+    def __str__(self):
+        return f'This is {self.name}'
+
+
 def get_info_sign_horoscope(requests, sign_zodiac: str):
-    try:
-        return HttpResponse(f'<h1>{signs[sign_zodiac]}</h1>')
-    except:
-        return HttpResponseNotFound(f'<h1>Знака зодиака {sign_zodiac} не существует</h1>')
+    description = signs.get(sign_zodiac)
+    data = {
+        'description_zodiac': description,
+        'sign': sign_zodiac,
+        'my_int': 100,
+        'my_float': 100.00,
+        'my_list': [1, 2, 3],
+        'my_tuple': (1, 2, 3),
+        'my_dict': {'name': 'Jack', 'age': 40},
+        'my_class': Person('Ji', 1000),
+    }
+    return render(requests, 'horoscope/info_zodiac.html', context=data)
+
 
 def main_page(request):
     return HttpResponse('Main Page')
@@ -44,12 +65,13 @@ def main_page(request):
 def get_info_sign_horoscope_by_number(requests, sign_zodiac: int):
     zodiacks = list(signs)
     try:
-        name_zodiack = zodiacks[sign_zodiac-1]
-        redirect_url = reverse('horoscope_name', args=(name_zodiack, ))
+        name_zodiack = zodiacks[sign_zodiac - 1]
+        redirect_url = reverse('horoscope_name', args=(name_zodiack,))
         return HttpResponseRedirect(redirect_url)
         # return redirect('https://www.python.org')
     except:
         return HttpResponseNotFound(f'<h1>Знака зодиака {sign_zodiac} не существует</h1>')
+
 
 def index(request):
     zodiacks = list(signs)
@@ -63,6 +85,3 @@ def index(request):
     </ul>
     """
     return HttpResponse(response)
-
-
-

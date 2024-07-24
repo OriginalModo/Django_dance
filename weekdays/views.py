@@ -30,7 +30,8 @@ def monday_int(request, day):
         case _:
             return HttpResponseNotFound(f'<h1>Неверный номер дня - {day}</h1>')
 
-
+def hH(request):
+    return render(request, 'weekdays/greeting.html')
 
 
 

@@ -17,5 +17,9 @@ urlpatterns = [
     path(r'get_square_area/<int:square>/', get_square_area_redirect),
     path(r'get_circle_area/<int:circle>/', get_circle_area_redirect),
 
+    re_path(r'get_rectangle_area/[Aa]+', get_rectangle_area_new),
+    re_path(r'get_square_area/[Aa]+', get_square_area_new),
+    re_path(r'get_circle_area/[Aa]+', get_circle_area_new),
+
 
 ]
