@@ -80,11 +80,11 @@
   path('horoscope/', include('horoscope.urls')),
 
 
- Конвертеры роутов Расположение важно Обработка роутов идет сверху вниз:
+ Конвертеры роутов Расположение важно Обработка роутов идет сверху вниз: Динамические url
  path(r'<str:sign_zodiac>/', get_info_sign_horoscope),            # Тип Строка
  path(r'<int:sign_zodiac>', get_info_sign_horoscope_by_number),   # Тип Число
 
- Также можно создавать свои собственные конвертеры
+
 
  Располагаются они в модуле django.urls.converters
  DEFAULT_CONVERTERS = {
@@ -95,16 +95,277 @@
      'uuid': UUIDConverter(),
  }
 
+ Также можно создавать свои собственные конвертеры
+ class MyDateConverter:
+     regex = '^(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19|20)\d\d$'
 
- from django.http import HttpResponse, HttpResponseNotFound, ...
+     def to_python(self, value):
+         return datetime.strptime(value, f'%d-%m-%Y')
 
- HttpResponse - возвращает Ответ на Запрос.
- HttpResponseNotFound - возвращает ошибку 404 и сообщение об ошибке.
+     def to_url(self, value):
+         # return value.strftime(f'%d-%m-%Y')
+         return f'{value:%d-%m-%Y}'
+
+
+ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, ...
+
+ HttpResponse - возвращает Ответ на Запрос.  статус код - 200
+ HttpResponseNotFound - возвращает ошибку 404 и сообщение об ошибке Страница не найдена.  статус код - 404
 
     try:
         return HttpResponse(f'<h1>{dct[day]}</h1>')
     except:
         return HttpResponseNotFound(f'<h1>{day} не существует</h1>')
+
+ HttpResponseRedirect - Перенаправление пользователя на другую страницу веб-сайта. статус код - 302
+
+ def index(request):
+    return HttpResponseRedirect('https://www.python.org')
+
+ Функция redirect - также помогает выполнить перенаправление в Django.  статус код - 302
+
+ from django.shortcuts import redirect
+
+    def index(request):
+      return redirect('https://www.python.org')
+
+
+ Функция reverse - позволяет генерировать URL-адреса на основе имен URL-адресов в вашем приложении.
+
+ from django.urls import reverse        # Тоже самое
+ from django.shortcuts import reverse   # Тоже самое
+
+ reverse(viewname, urlconf=None, args=None, kwargs=None, current_app=None)
+
+ # Передать можно коллекцию
+ reverse('my_view', args=[1])
+ reverse('my_view', args=(1, ))
+ reverse('my_view', kwargs={'slug': 'hello-world'})
+
+
+ # Имя нашего роута  Имя для URL-адреса
+  path('<str:sign_zodiac>', views.get_info_about_sign_zodiac, name='horoscope-name'),
+
+
+ Тестирование unittest в Django
+
+ В Django тесты определяются в специальном модуле tests.py внутри приложения.
+ В файлике test пишем тесты
+
+ # Пример
+ from django.test import TestCase
+
+ class TestHoroscope(TestCase):
+
+    # Тест на статут кода
+    def test_index(self):
+        response = self.client.get('/horoscope/')  # client - Замена Браузера
+        self.assertEqual(response.status_code, 200)
+
+    # Тест на статут кода и перенаправление
+    def test_libra_redirect(self):
+        response = self.client.get('/7')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/horoscope/libra/')
+
+ # Затем в терминале пишем команду
+ python manage.py test название_приложения
+
+ Типы проверок в классе TestCase
+ assertEqual(a, b)          a == b
+ assertNotEqual(a, b)       a != b
+ assertTrue(x)              bool(x) is True
+ assertFalse(x)             bool(x) is False
+ assertIs(a, b)             a is b
+ assertIsNot(a, b)          a is not b
+ assertIsNone(x)            x is None
+ assertIsNotNone(x)         x is not None
+ assertIn(a, b)             a in b
+ assertNotIn(a, b)          a not in b
+ assertIsInstance(a, b)     isinstance(a, b)
+ assertNotIsInstance(a, b)  not isinstance(a, b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+
 
 
 def get_rectangle_area(request, height: int, weight: int):
@@ -16,3 +19,15 @@ def get_circle_area(request, circle: int):
         return __import__("math").pi * (radius ** 2)
 
     return HttpResponse(f'<h1>Площадь круга радиуса {circle} равна {area(circle):.1f}</h1>')
+
+
+def get_rectangle_area_redirect(request, height: int, weight: int):
+    return redirect(reverse_lazy('rect', args=[height, weight]))
+
+
+def get_square_area_redirect(request, square: int):
+    return redirect(reverse_lazy('squa', args=[square]))
+
+
+def get_circle_area_redirect(request, circle: int):
+    return redirect(reverse_lazy('circ', args=[circle]))
