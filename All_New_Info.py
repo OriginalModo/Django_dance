@@ -220,7 +220,7 @@
  несколько баз данных. Это параметр может быть полезен, если вы хотите выполнить запрос на определенной базе данных
  вместо использования базы данных по умолчанию.
 
-
+ # Ключ используется в шаблоне Jinja2 используем  {{ 'ключ' }}
  def get_info_about_sign_zodiac(request, sign_zodiac: str):
      description = zodiac_dict.get(sign_zodiac)
      data = {
@@ -236,42 +236,82 @@
      return render(request, 'horoscope/info_zodiac.html', context=data)
 
 
+ В браузере жмем Просмотреть код и чтобы было выбрано 'все' под словом Фильтр:
+ - Элементы - просмотр html
+ - Сеть
+    - Заголовки - URL Запроса, Метод Запроса, Код Статуса и другие
+    - Ответ - что выводит
+ - И другие можно самостоятельно изучить
+
+ Если Нет каких-то столбцов нажимаем на Столбец 'Название' и они появяться
+ Ctrl + F5 - Обновить в Браузере чтобы Django Подхватил изменения
+
+ Перед столбцом Элементы нажимаем на Стрелочку или Ctrl + Shift + C  можно просмотреть элемент (что влияет на страницу)
+
 
  Шаблонизатор Jinja2 в Django в Html
  пишем тег затем нажимаем Tab и тег сам сделаем {% if ...%} {% endif %} или другие операторы
+ Теги и ссылка:
+    {% for zod in zodiacks %}
+        <li><a href="{% url 'horoscope_name' sign_zodiac=zod %}">{{ zod|title }}</a></li>
+    {% endfor %}
+
+  в html  Можно li*12 и нажать tab и будет 12 тегов сразу
+
+ Фильтры шаблона:
+
+ {{ variable|filter1|filter2|filter3 }}
+ {{ variable|filter_name:param }}
+
+ Использование фильтров вне шаблона:
+ from django.template.defaultfilters import slugify
+
+ title = "Some Title With Spaces!"
+ slug = slugify(title)
+
+ print(slug)  # -> some-title-with-spaces
+
+ Наследование шаблонов. Теги block и extends
+
+ {% block title %} {% endblock %}      # Блоки в базавом  html
+ {{% block content %} {% endblock %}   # Блоки в базавом  html
+
+ # Как можно наследовать базовый шаблоне html  Пишем в начале файла на первой строчке 1
+ {% extends 'base.html' %}
+
+ Тег include
+
+ {% include "имя_шаблона.html" %}
+
+ Можно запрещать доступ к контексту основного шаблона, тогда переменные не будут доступны.
+ Делается это при помощи параметра only
+
+ {% include "имя_шаблона.html" only %}
+
+ Можно пробрасывать свои собственные переменные в шаблон
+ {% include "имя_шаблона.html" with a=100 b=200 %}
 
 
 
+ В settings
+ на уровне проекта создаем папку static
 
+ # Путь где будет искать Статические файлы: CSS, JavaScript, изображения и другие файлы.    Если его нет, то создаем
+ STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
+ Для подключения статики в html прописываем в первой строчке 1
+ {% load static %}
 
+ # link Обязательно должен быть внутри <head> </head>
+<head>
+ <link rel="stylesheet" href=" {% static 'имя_приложения/css/имя.css' %}">
+</head>
+ на уровне проекта создаем папку templates
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ В константе TEMPLATES []  должна быть такая строчка она отвечает за, то где Django будет искать html
+ 'DIRS': [BASE_DIR / 'templates'],
 
 
 

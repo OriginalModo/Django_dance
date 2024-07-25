@@ -48,12 +48,6 @@ def get_info_sign_horoscope(requests, sign_zodiac: str):
     data = {
         'description_zodiac': description,
         'sign': sign_zodiac,
-        'my_int': 100,
-        'my_float': 100.00,
-        'my_list': [1, 2, 3],
-        'my_tuple': (1, 2, 3),
-        'my_dict': {'name': 'Jack', 'age': 40},
-        'my_class': Person('Ji', 1000),
     }
     return render(requests, 'horoscope/info_zodiac.html', context=data)
 
@@ -75,13 +69,138 @@ def get_info_sign_horoscope_by_number(requests, sign_zodiac: int):
 
 def index(request):
     zodiacks = list(signs)
-    li_elements = ''
-    for i in zodiacks:
-        redirect_path = reverse('horoscope_name', args=(i,))
-        li_elements += f"<li> <a href='{redirect_path}'>{i.title()}</a> </li>"
-    response = f"""
-    <ul>
-        {li_elements}
-    </ul>
-    """
-    return HttpResponse(response)
+    # li_elements += f"<li> <a href='{redirect_path}'>{i.title()}</a> </li>"
+    context = {
+        'zodiacks': zodiacks,
+        'signs': signs,
+    }
+    return render(request, 'horoscope/index.html', context=context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

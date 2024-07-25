@@ -1,36 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Гороскод  для {{ sign|upper }} </title>
-</head>
-<body>
-    <h1>Приложение Гороскод</h1>
+{% extends 'base.html' %}
+{% load static %}
+{% load my_filter %}
+
+{% block css_add %} <link rel="stylesheet" href="{% static 'horoscope/css/info.css' %}">{% endblock %}
+
+{% block title %}
+	Гороскод  для {{ sign|upper }}
+{% endblock %}
+
+
+{% block content %}
+    {% include 'includes/navbar.html' %}
+
+    <h2>Content from info_zodiac.html </h2>
     {% if description_zodiac is None %}
     	<h2>Неправильный знак зодиака - {{ sign|upper }}</h2>
     {% else %}
-        {{ description_zodiac|title|safe }}
+        <h2>{{ description_zodiac|capfirst|safe }}</h2>
     {% endif %}
+{% endblock %}
 
 
-    {% if my_list|length >= 3 %}
-        <p>Cписок из 3 или более элементов</p>
-    {% elif my_list|length == 2 %}
-        <p>Cписок из 2 элементов</p>
-    {% elif my_list|length == 1 %}
-        <p>Cписок из 1 элементов</p>
-    {% else %}
-        <p>Пустой Спасок {{ my_list }}</p>
-    {% endif %}
-
-
-
-    <h2>{{ description_zodiac|title|safe }}</h2>
-    <p>my_int {{ my_int|add:'111' }}</p>
-    <p>my_float {{ my_float }}</p>
-    <p>my_list {{ my_list|first }}</p>
-    <p>my_tuple {{ my_tuple|join:" !!! " }}</p>
-    <p>my_dict {{ my_dict }} {{ my_dict.name }}</p>
-    <p>my_dict {{ my_class }} {{ my_class.age }}</p>
-</body>
-</html>
